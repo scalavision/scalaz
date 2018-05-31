@@ -82,6 +82,20 @@ lazy val std = crossProject.module
 lazy val stdJVM = std.jvm
 lazy val stdJS  = std.js
 
+lazy val cofree = crossProject.module
+  .in(file("cofree"))
+  .settings(stdSettings("cofree"))
+  .settings(
+    libraryDependencies ++=
+      Seq("org.specs2" %%% "specs2-core"          % "4.2.0" % "test",
+          "org.specs2" %%% "specs2-matcher-extra" % "4.2.0" % "test"),
+    scalacOptions in Test ++= Seq("-Yrangepos")
+  )
+  .dependsOn(effect)
+
+lazy val cofreeJVM = cofree.jvm
+lazy val cofreeJS = cofree.js
+
 lazy val example = project.module
   .dependsOn(baseJVM, stdJVM)
   .enablePlugins(MicrositesPlugin)
